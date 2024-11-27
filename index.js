@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(
   cors({
-    origin: 'https://your-frontend-netlify-url.netlify.app', // Replace with your frontend URL
+    origin: 'https://pehlakadamm.netlify.app/', // Replace with your frontend URL
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
   })
 );
