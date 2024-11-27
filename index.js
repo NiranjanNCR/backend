@@ -14,6 +14,7 @@ app.use(
   cors({
     origin: 'https://pehlakadamm.netlify.app/', // Replace with your frontend URL
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    
   })
 );
 app.use(bodyParser.json());
