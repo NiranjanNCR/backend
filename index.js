@@ -18,7 +18,7 @@ app.use(
   })
 );
 app.use(bodyParser.json());
-app.use('/uploads', express.dynamic(path.join(__dirname, 'uploads')));
+//app.use('/uploads', express.dynamic(path.join(__dirname, 'uploads')));
 
 
 // MongoDB setup
