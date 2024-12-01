@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // For parsing URL-encoded d
 
 // MongoDB setup
 mongoose.connect(
-  process.env.MONGO_URI || 'mongodb+srv://nrjsingh5123:SngVAHCGa4bnjfbZ@counselling.3rc96.mongodb.net/counselling', 
+  process.env.MONGO_URI || 'mongodb+srv://niranjansinghwrk:JM01rxmHKxUNyYKL@cluster0.overd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', 
   { useNewUrlParser: true, useUnifiedTopology: true, retryWrites: true }
 );
 mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'));
