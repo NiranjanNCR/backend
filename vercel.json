@@ -4,8 +4,8 @@
       { "src": "api/form.js", "use": "@vercel/node" }
     ],
     "routes": [
-      { "src": "/api/submit", "dest": "api/form.js" },  // Points to the serverless function handling form submission
-      { "src": "/(.*)", "dest": "api/form.js" }         // Catch-all route to handle other requests
+      { "src": "/api/submit", "dest": "api/form.js" },  
+      { "src": "/(.*)", "dest": "api/form.js" }         
     ]
   }
   
