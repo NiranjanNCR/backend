@@ -4,65 +4,50 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
+// Middleware
+app.use(cors());
+app.use(express.json()); // Use express's built-in JSON parser (no need for body-parser)
 // Middleware
 app.use(cors({ 
   origin: 'https://counselling-fd.vercel.app', // Frontend URL
   credentials: true 
 }));
-app.use(bodyParser.json()); // For parsing JSON data
-app.use(bodyParser.urlencoded({ extended: true })); // For parsing URL-encoded data
 
 // MongoDB setup
-mongoose.connect(
-  process.env.MONGO_URI || 'mongodb+srv://niranjansinghwrk:JM01rxmHKxUNyYKL@cluster0.overd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', 
-  { useNewUrlParser: true, useUnifiedTopology: true, retryWrites: true }
-);
-mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'));
-mongoose.connection.once('open', () => console.log('Connected to MongoDB'));
+mongoose.connect('mongodb+srv://niranjansinghwrk:JM01rxmHKxUNyYKL@cluster0.overd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+// mongoose.connect('mongodb://localhost:27017/counselling')
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
-// Schema and Model for form data
+// Schema and Model
 const formSchema = new mongoose.Schema({
-  firstName: String,
-  lastName: String,
-  email: String,
-  number: Number,
-  message: String,
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  email: { type: String, required: true },
+  number: { type: Number, required: true },
+  message: { type: String, required: true },
 });
 
 const Form = mongoose.model('Form', formSchema);
 
-// API route for form submission (No Multer, no file handling)
+// API route for form submission
 app.post('/submit', async (req, res) => {
-  const { firstName, lastName, email, number, message } = req.body;
-
-  // Validate required fields
-  if (!firstName || !email) {
-    return res.status(400).send('Missing required fields.');
-  }
-
-  // Create new form data instance
-  const formData = new Form({
-    firstName,
-    lastName,
-    email,
-    number,
-    message,
-  });
-
   try {
-    // Save form data to the database
+    const { firstName, lastName, email, number, message } = req.body;
+
+    const formData = new Form({ firstName, lastName, email, number, message });
     await formData.save();
-    res.status(200).send('Form data saved successfully!');
+
+    res.status(200).json({ message: 'Form data saved successfully!' });
   } catch (error) {
-    console.error('Error saving form data:', error.message);
-    res.status(500).send('Failed to save form data.');
+    console.error('Error saving form data:', error);
+    res.status(500).json({ message: 'Failed to save form data.', error });
   }
 });
 
-// Test route (just to check the server)
-app.get('/', (req, res) => res.json('HI'));
-
 // Start the server
-app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
